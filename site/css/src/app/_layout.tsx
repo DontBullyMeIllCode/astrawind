@@ -1,9 +1,14 @@
 import * as React from "react"
 import { Platform } from "react-native"
-import { Stack } from "expo-router"
+import { Slot } from "expo-router"
 import { StatusBar } from "expo-status-bar"
-import { AstraWindProvider, TextRoot, type AstraWindTheme, type FontResolver } from "@astrawind/css"
-import { SchemeProvider } from "@/site/scheme"
+import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context"
+import { styled, type FontResolver } from "@astrawind/css"
+import { ThemeProvider, useTheme } from "@astrawind/ui"
+import { Header } from "@/site/header"
+import { readTheme } from "@/site/theme-persistence"
+
+const SafeAreaView = styled(RNSafeAreaView)
 
 const MONO = Platform.select({
   ios: "Menlo",
@@ -18,28 +23,42 @@ const fonts: FontResolver = (family, weight, style) => ({
   fontStyle: style,
 })
 
-const theme: AstraWindTheme = {
-  vars: { "color-border": "var(--color-gray-200)" },
-  dark: { "color-border": "var(--color-gray-800)" },
-  fonts,
+/**
+ * `text-link`: the theme color for text. The cyan theme's dark `primary` is a fill color,
+ * too dark to read as text on the dark background; its `sidebar-primary` is the lighter shade.
+ */
+const cssVars = {
+  theme: { "color-link": "var(--link)" },
+  light: { link: "var(--primary)" },
+  dark: { link: "var(--sidebar-primary)" },
+}
+
+function Shell() {
+  const { resolvedTheme } = useTheme()
+  return (
+    <SafeAreaView edges={["top"]} className="flex-1 bg-background">
+      <StatusBar style={resolvedTheme === "dark" ? "light" : "dark"} />
+      <Header />
+      <Slot />
+    </SafeAreaView>
+  )
+}
+
+/** Restores the saved theme once mounted (static pages render with the default). */
+function RestoreTheme() {
+  const { setTheme } = useTheme()
+  React.useEffect(() => {
+    const saved = readTheme()
+    if (saved) setTheme(saved)
+  }, [setTheme])
+  return null
 }
 
 export default function RootLayout() {
   return (
-    <SchemeProvider>
-      {(scheme) => (
-        <AstraWindProvider theme={theme} colorScheme={scheme}>
-          <TextRoot className="font-sans text-base text-gray-950 dark:text-white">
-            <StatusBar style={scheme === "dark" ? "light" : "dark"} />
-            <Stack
-              screenOptions={{
-                headerShown: false,
-                contentStyle: { backgroundColor: scheme === "dark" ? "#030712" : "#ffffff" },
-              }}
-            />
-          </TextRoot>
-        </AstraWindProvider>
-      )}
-    </SchemeProvider>
+    <ThemeProvider defaultTheme="system" baseColor="mist" themeColor="cyan" fonts={fonts} cssVars={cssVars}>
+      <RestoreTheme />
+      <Shell />
+    </ThemeProvider>
   )
 }

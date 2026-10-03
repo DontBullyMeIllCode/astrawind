@@ -103,12 +103,13 @@ function SheetContent({
 
   return (
     <SheetPortal>
-      <RNView style={[StyleSheet.absoluteFill, { pointerEvents: "box-none" }]}>
+      <RNView style={StyleSheet.absoluteFill} pointerEvents="box-none">
         <Animated.View style={[StyleSheet.absoluteFill, { opacity: progress }]}>
           <SheetOverlay />
         </Animated.View>
         <Animated.View
-          style={[StyleSheet.absoluteFill, { transform, pointerEvents: "box-none" }, keyboard ? { bottom: keyboard } : undefined]}
+          style={[StyleSheet.absoluteFill, { transform }, keyboard ? { bottom: keyboard } : undefined]}
+          pointerEvents="box-none"
         >
           <SheetContentPrimitive
             data-slot="sheet-content"

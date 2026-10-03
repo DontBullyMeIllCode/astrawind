@@ -14,19 +14,19 @@ function Swatches() {
     <View className="my-6 gap-1.5">
       <View className="flex-row gap-1.5 pl-20">
         {SHADES.map((s) => (
-          <Text key={s} className="flex-1 text-center font-mono text-[10px] text-gray-500">
+          <Text key={s} className="flex-1 text-center font-mono text-[10px] text-muted-foreground">
             {s}
           </Text>
         ))}
       </View>
       {PALETTE.map((color) => (
         <View key={color} className="flex-row items-center gap-1.5">
-          <Text className="w-20 font-mono text-xs text-gray-700 dark:text-gray-300">{color}</Text>
+          <Text className="w-20 font-mono text-xs text-foreground/80">{color}</Text>
           {SHADES.map((s) => (
             <View
               key={s}
               aria-label={`${color}-${s}`}
-              className={`aspect-square flex-1 rounded-sm bg-${color}-${s} ring-1 ring-gray-950/10 ring-inset dark:ring-white/10`}
+              className={`aspect-square flex-1 rounded-sm bg-${color}-${s} ring-1 ring-foreground/10 ring-inset`}
             />
           ))}
         </View>

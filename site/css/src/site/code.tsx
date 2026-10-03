@@ -1,5 +1,10 @@
 import * as React from "react"
+import { Platform } from "react-native"
+import { CheckIcon, CopyIcon } from "lucide-react-native"
 import { ScrollView, Text, View } from "@astrawind/css"
+import { cn } from "@astrawind/ui"
+import { Button } from "@astrawind/ui/button"
+import { Icon } from "@astrawind/ui/icon"
 
 export type Lang = "tsx" | "sh" | "css" | "json"
 
@@ -37,29 +42,49 @@ function tokenize(code: string, lang: Lang | undefined): Token[] {
 }
 
 const COLORS: Record<Kind, string> = {
-  plain: "text-gray-100",
-  comment: "text-gray-500 italic",
-  string: "text-sky-300",
-  keyword: "text-pink-400",
-  tag: "text-pink-400",
-  attr: "text-indigo-300",
-  punct: "text-gray-400",
-  number: "text-amber-300",
+  plain: "text-foreground",
+  comment: "text-muted-foreground italic",
+  string: "text-emerald-700 dark:text-emerald-400",
+  keyword: "text-violet-700 dark:text-violet-400",
+  tag: "text-sky-700 dark:text-sky-400",
+  attr: "text-amber-700 dark:text-amber-300",
+  punct: "text-muted-foreground",
+  number: "text-orange-700 dark:text-orange-300",
 }
 
-/** A dark code block with a filename or language label, like tailwindcss.com's. */
+function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = React.useState(false)
+  // Clipboard access is web-only here; native readers can select the text.
+  if (Platform.OS !== "web") return null
+  return (
+    <Button
+      variant="ghost"
+      size="icon-sm"
+      aria-label="Copy code"
+      className="size-7"
+      onPress={() => {
+        void globalThis.navigator?.clipboard?.writeText(text)
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+      }}
+    >
+      <Icon as={copied ? CheckIcon : CopyIcon} className="size-3.5" />
+    </Button>
+  )
+}
+
+/** A code block with a filename or language label and a copy button. */
 export function CodeBlock({ code, lang, title, className }: { code: string; lang?: Lang; title?: string; className?: string }) {
   const text = code.replace(/^\n+|\s+$/g, "")
   const tokens = React.useMemo(() => tokenize(text, lang), [text, lang])
   return (
-    <View className={`${className ?? "my-6"} overflow-hidden rounded-xl bg-gray-950 ring-1 ring-gray-950/10 dark:bg-white/5 dark:ring-white/10`}>
-      {(title || lang) && (
-        <View className="flex-row items-center border-b border-white/10 px-4 py-2">
-          <Text className="font-mono text-xs font-medium text-gray-400">{title ?? lang}</Text>
-        </View>
-      )}
+    <View className={cn("my-6 overflow-hidden rounded-xl border bg-muted/40 dark:bg-muted/20", className)}>
+      <View className="h-10 flex-row items-center justify-between border-b px-4">
+        <Text className="font-mono text-xs text-muted-foreground">{title ?? lang ?? "code"}</Text>
+        <CopyButton text={text} />
+      </View>
       <ScrollView horizontal contentContainerClassName="p-4">
-        <Text selectable className="font-mono text-sm/6 text-gray-100">
+        <Text selectable className="font-mono text-[13px]/6 text-foreground">
           {tokens.map(([kind, t], i) => (
             <Text key={i} className={COLORS[kind]}>
               {t}
@@ -73,5 +98,5 @@ export function CodeBlock({ code, lang, title, className }: { code: string; lang
 
 /** Inline `code`. */
 export function Code({ children }: { children: React.ReactNode }) {
-  return <Text className="font-mono text-[0.875em] font-medium text-gray-950 dark:text-white">{children}</Text>
+  return <Text className="rounded-md bg-muted px-1 py-0.5 font-mono text-[0.875em]">{children}</Text>
 }

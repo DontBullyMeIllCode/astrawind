@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link, usePathname, type Href } from "expo-router";
 import { MenuIcon, MoonIcon, SunIcon } from "lucide-react-native";
-import { Text, View } from "@astrawind/css";
+import { ScrollView, Text, View } from "@astrawind/css";
 import { useTheme } from "@astrawind/ui";
 import { Button } from "@astrawind/ui/button";
 import { Icon } from "@astrawind/ui/icon";
@@ -81,7 +81,7 @@ function MobileNav() {
         <SheetHeader className="border-b">
           <SheetTitle>Menu</SheetTitle>
         </SheetHeader>
-        <View className="gap-6 overflow-hidden p-4">
+        <ScrollView className="flex-1" contentContainerClassName="gap-6 p-4 pb-12">
           <View className="gap-1">
             {siteConfig.navItems.map((item) => (
               <BoxLink
@@ -99,7 +99,7 @@ function MobileNav() {
               <Text className="text-sm font-medium text-muted-foreground">
                 {section.title}
               </Text>
-              {section.items.slice(0, 12).map((item) => (
+              {section.items.map((item) => (
                 <BoxLink
                   key={item.href as string}
                   href={item.href}
@@ -110,7 +110,7 @@ function MobileNav() {
               ))}
             </View>
           ))}
-        </View>
+        </ScrollView>
       </SheetContent>
     </Sheet>
   );

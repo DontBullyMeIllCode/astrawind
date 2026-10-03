@@ -24,5 +24,6 @@ pnpm --filter ui test  # server-renders everything in src/registry/, light and d
 
 Component pages come from the ui package: the title, description and imports from shadcn's docs
 (`ui/upstream/docs/`, vendored by `ui`'s `pnpm sync`), and the live preview and code from
-`ui/test/examples/<name>.tsx`. The site uses `@astrawind/ui`'s source directly through its
-`react-native` export condition, so changes to the components show up without a build.
+`ui/test/examples/<name>.tsx`. The site uses `@astrawind/ui`'s and `@astrawind/css`'s source
+directly (`metro.config.js` resolves them to `src/` on every platform), so changes show up without
+a build.

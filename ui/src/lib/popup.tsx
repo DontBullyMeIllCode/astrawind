@@ -26,9 +26,9 @@ export function SidePopupAnimation({
   const slide = progress.interpolate({ inputRange: [0, 1], outputRange: [from, 0] })
   return (
     <Animated.View
+      pointerEvents={pointerEvents}
       style={[
         {
-          pointerEvents,
           opacity: progress,
           transform: [
             { scale: progress.interpolate({ inputRange: [0, 1], outputRange: [0.95, 1] }) },

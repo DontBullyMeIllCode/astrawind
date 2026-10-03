@@ -2,15 +2,7 @@ import * as React from "react"
 import { Text, View } from "@astrawind/css"
 import { Code, CodeBlock } from "@/site/code"
 import { TextLink } from "@/site/link"
-import { H2, H3, Li, P, Ul } from "../prose"
-
-function Preview({ children }: { children: React.ReactNode }) {
-  return (
-    <View className="my-6 items-center rounded-xl border border-gray-950/10 bg-gray-50 p-8 dark:border-white/10 dark:bg-white/5">
-      {children}
-    </View>
-  )
-}
+import { H2, H3, Li, P, Preview, Ul } from "../prose"
 
 export default function StylingWithUtilityClasses() {
   return (

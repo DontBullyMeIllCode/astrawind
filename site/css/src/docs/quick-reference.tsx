@@ -1,6 +1,9 @@
 import * as React from "react"
 import { Platform } from "react-native"
-import { Pressable, resolve, Text, useAstraWind, View } from "@astrawind/css"
+import { resolve, Text, useAstraWind, View } from "@astrawind/css"
+import { cn } from "@astrawind/ui"
+import { Button } from "@astrawind/ui/button"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@astrawind/ui/table"
 import utilities from "../generated/utilities.json"
 import { nativeEffect } from "./native"
 
@@ -55,47 +58,58 @@ export function QuickReference({ slug }: { slug: string }) {
   const [expanded, setExpanded] = React.useState(false)
   const visible = expanded ? rows : rows.slice(0, COLLAPSED)
 
-  if (!rows.length) return <Text className="text-sm text-gray-500">No classes.</Text>
+  if (!rows.length) return <Text className="text-sm text-muted-foreground">No classes.</Text>
 
+  // Cells wrap: the CSS and native columns hold several declarations.
+  const cell = "px-3 py-2 whitespace-normal"
   return (
-    <View className="overflow-hidden rounded-xl border border-gray-950/10 dark:border-white/10">
-      <View className="flex-row border-b border-gray-950/10 bg-gray-50 dark:border-white/10 dark:bg-white/5">
-        <Text className="w-1/4 px-3 py-2 text-sm font-semibold text-gray-950 dark:text-white">Class</Text>
-        <Text className="flex-[1.4] px-3 py-2 text-sm font-semibold text-gray-950 dark:text-white">Styles</Text>
-        <Text className="flex-1 px-3 py-2 text-sm font-semibold text-gray-950 dark:text-white">React Native</Text>
-      </View>
-      {visible.map(([cls, css]) => {
-        const lines = nativeEffect(cls, res)
-        return (
-          <View key={cls} className="flex-row border-b border-gray-950/5 dark:border-white/5">
-            <Text selectable className="w-1/4 px-3 py-2 font-mono text-xs/5 text-sky-700 dark:text-sky-400">
-              {cls}
-            </Text>
-            <Text selectable className="flex-[1.4] px-3 py-2 font-mono text-xs/5 text-gray-600 dark:text-gray-400">
-              {css}
-            </Text>
-            {lines.length ? (
-              <Text selectable className="flex-1 px-3 py-2 font-mono text-xs/5 text-gray-600 dark:text-gray-400">
-                {lines.join("\n")}
-              </Text>
-            ) : (
-              <Text className="flex-1 px-3 py-2 text-xs/5 text-gray-400 italic dark:text-gray-500">No native equivalent</Text>
-            )}
-          </View>
-        )
-      })}
+    <View className="overflow-hidden rounded-xl border">
+      <Table>
+        <TableHeader className="bg-muted/50">
+          <TableRow>
+            <TableHead className="w-1/4 flex-none px-3">Class</TableHead>
+            <TableHead className="flex-[1.4] px-3">Styles</TableHead>
+            <TableHead className="px-3">React Native</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {visible.map(([cls, css]) => {
+            const lines = nativeEffect(cls, res)
+            return (
+              <TableRow key={cls}>
+                <TableCell className={cn(cell, "w-1/4 flex-none justify-start")}>
+                  <Text selectable className="font-mono text-xs/5 text-link">
+                    {cls}
+                  </Text>
+                </TableCell>
+                <TableCell className={cn(cell, "flex-[1.4] justify-start")}>
+                  <Text selectable className="font-mono text-xs/5 text-muted-foreground">
+                    {css}
+                  </Text>
+                </TableCell>
+                <TableCell className={cn(cell, "justify-start")}>
+                  {lines.length ? (
+                    <Text selectable className="font-mono text-xs/5 text-muted-foreground">
+                      {lines.join("\n")}
+                    </Text>
+                  ) : (
+                    <Text className="text-xs/5 text-muted-foreground/70 italic">No native equivalent</Text>
+                  )}
+                </TableCell>
+              </TableRow>
+            )
+          })}
+        </TableBody>
+      </Table>
       {rows.length > COLLAPSED && (
-        <Pressable
-          onPress={() => setExpanded((e) => !e)}
-          className="items-center py-2.5 hover:bg-gray-50 active:bg-gray-50 dark:hover:bg-white/5 dark:active:bg-white/5"
-        >
-          <Text className="text-sm font-medium text-gray-950 dark:text-white">
+        <View className="items-center border-t p-2">
+          <Button variant="ghost" size="sm" onPress={() => setExpanded((e) => !e)}>
             {expanded ? "Show fewer classes" : `Show all ${rows.length} classes`}
-          </Text>
-        </Pressable>
+          </Button>
+        </View>
       )}
       {expanded && total > rows.length && (
-        <Text className="px-3 pb-3 text-center text-xs text-gray-500">
+        <Text className="px-3 pb-3 text-center text-xs text-muted-foreground">
           And {total - rows.length} more, with the same pattern.
         </Text>
       )}

@@ -184,14 +184,15 @@ function DrawerContent({ className, children, style, ...props }: React.Component
 
   return (
     <DrawerPortal>
-      <RNView style={[StyleSheet.absoluteFill, { pointerEvents: "box-none" }]}>
+      <RNView style={StyleSheet.absoluteFill} pointerEvents="box-none">
         {modal && (
           <Animated.View style={[StyleSheet.absoluteFill, { opacity: overlayOpacity }]}>
             <DrawerOverlay />
           </Animated.View>
         )}
         <Animated.View
-          style={[StyleSheet.absoluteFill, { transform, pointerEvents: "box-none" }, keyboard ? { bottom: keyboard } : undefined]}
+          style={[StyleSheet.absoluteFill, { transform }, keyboard ? { bottom: keyboard } : undefined]}
+          pointerEvents="box-none"
         >
           <DrawerContentPrimitive
             data-slot="drawer-content"

@@ -77,9 +77,9 @@ export function PopupAnimation({
   const progress = useOpenAnimation(true, undefined, 120)
   return (
     <Animated.View
+      pointerEvents={pointerEvents}
       style={[
         {
-          pointerEvents,
           opacity: progress,
           transform: [{ scale: progress.interpolate({ inputRange: [0, 1], outputRange: [scale, 1] }) }],
         },
@@ -231,18 +231,19 @@ export function CenteredOverlayLayout({
   children: React.ReactNode
 }) {
   return (
-    <RNView style={[StyleSheet.absoluteFill, { pointerEvents: "box-none" }]}>
+    <RNView style={StyleSheet.absoluteFill} pointerEvents="box-none">
       <Animated.View style={[StyleSheet.absoluteFill, { opacity: progress }]}>{overlay}</Animated.View>
       <KeyboardAvoidingView
-        style={[StyleSheet.absoluteFill, { pointerEvents: "box-none" }]}
+        style={StyleSheet.absoluteFill}
+        pointerEvents="box-none"
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
         <View className="flex-1 items-center justify-center p-4" style={{ pointerEvents: "box-none" }}>
           <Animated.View
+            pointerEvents="box-none"
             // Stretch, and let the popup center itself (`mx-auto`): on web the dialog primitive wraps
             // it in a block element that `alignItems: center` would shrink to its content.
             style={{
-              pointerEvents: "box-none",
               width: "100%",
               alignItems: "stretch",
               opacity: progress,

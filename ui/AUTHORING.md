@@ -62,7 +62,10 @@ Reference components that show the conventions: `button.tsx`, `badge.tsx`,
 6. **Shared helpers** in `src/lib/`: `overlay.tsx` (presence and open animations,
    `CenteredOverlayLayout`, `OpenSync` for controlled rn-primitives roots, `withHighlight`,
    `LongPressAdapter`, `composeRefs`), `use-controllable-state.ts`, `position.tsx`,
-   `insets.ts` (safe-area insets), `children.tsx`, `utils.ts`. Reuse them; add new helpers
+   `insets.ts` (safe-area insets), `children.tsx`, `utils.ts`, `chart.tsx` (the chart
+   context, `ChartContainer`, tooltip, legend and marker components that `chart.tsx` and
+   `chart-polar.tsx` share, so `chart-polar` doesn't import `chart`, which re-exports it: Metro
+   warns about require cycles). Reuse them; add new helpers
    in new files rather than editing shared ones, and never change their behavior.
 7. **Icons.** `Icon` from `./icon` with icons from `lucide-react-native`, using the same
    icon names upstream imports from `lucide-react` (`ChevronDownIcon`, `XIcon`, …).
@@ -73,6 +76,11 @@ Reference components that show the conventions: `button.tsx`, `badge.tsx`,
    React Native's `Animated` and `PanResponder` over gesture or animation libraries.
 10. **Style.** Plain function components, `cn()` for classes, 2-space indentation, double
     quotes, no semicolons, like the reference components.
+11. **`pointerEvents`.** Put `"none"` and `"auto"` in `style`. On a plain React Native
+    component (`View`, `Animated.View`, `KeyboardAvoidingView` from `react-native`), pass
+    `"box-none"` and `"box-only"` as the `pointerEvents` prop: they aren't CSS values, and
+    react-native-web throws on them in an inline style. Components from `@astrawind/css`
+    take any value in `style`.
 
 ## Prior art
 

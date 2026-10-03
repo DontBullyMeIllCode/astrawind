@@ -2,6 +2,8 @@ import * as React from "react"
 import { useLocalSearchParams } from "expo-router"
 import Head from "expo-router/head"
 import { Text, View } from "@astrawind/css"
+import { cn } from "@astrawind/ui"
+import { Badge } from "@astrawind/ui/badge"
 import { guides } from "@/docs/guides"
 import { pageBySlug, pages, sectionOf, type UtilityPage } from "@/docs/nav"
 import { PageNav } from "@/docs/page-nav"
@@ -19,20 +21,14 @@ function NativeSupport({ slug }: { slug: string }) {
   const all = native === total
   const none = native === 0
   return (
-    <View
-      className={`mb-6 flex-row items-center gap-2 self-start rounded-full px-3 py-1 ${
-        none ? "bg-amber-50 dark:bg-amber-500/10" : "bg-emerald-50 dark:bg-emerald-500/10"
-      }`}
-    >
-      <View className={`size-1.5 rounded-full ${none ? "bg-amber-500" : "bg-emerald-500"}`} />
-      <Text className={`text-xs font-medium ${none ? "text-amber-700 dark:text-amber-400" : "text-emerald-700 dark:text-emerald-400"}`}>
-        {all
-          ? "Every class applies on React Native"
-          : none
-            ? "No native equivalent: these classes are accepted and ignored"
-            : `${native} of ${total} classes apply on React Native`}
-      </Text>
-    </View>
+    <Badge variant="soft" color={none ? "warning" : "success"} className="mb-6 h-6 px-2.5">
+      <View className={cn("size-1.5 rounded-full", none ? "bg-warning" : "bg-success")} />
+      {all
+        ? "Every class applies on React Native"
+        : none
+          ? "No native equivalent: these classes are accepted and ignored"
+          : `${native} of ${total} classes apply on React Native`}
+    </Badge>
   )
 }
 
@@ -77,13 +73,11 @@ export default function DocPage() {
         <title>{`${page.title} - ${section?.title ?? "Docs"} - AstraWind`}</title>
         <meta name="description" content={page.description} />
       </Head>
-      <Text className="font-mono text-sm/6 font-medium tracking-widest text-gray-500 uppercase dark:text-gray-400">
-        {section?.title}
-      </Text>
-      <Text role="heading" aria-level={1} className="mt-2 text-3xl font-semibold tracking-tight text-gray-950 sm:text-4xl dark:text-white">
+      <Text className="text-sm/6 font-medium text-link">{section?.title}</Text>
+      <Text role="heading" aria-level={1} className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
         {page.title}
       </Text>
-      <Text className="mt-4 mb-12 text-lg/7 text-gray-700 dark:text-gray-400">{page.description}</Text>
+      <Text className="mt-4 mb-12 text-lg/7 text-balance text-muted-foreground">{page.description}</Text>
       {page.kind === "utility" ? <UtilityContent page={page} /> : Guide ? <Guide /> : null}
       <PageNav slug={page.slug} />
     </View>

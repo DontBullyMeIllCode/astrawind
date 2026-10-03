@@ -1,49 +1,124 @@
-import * as React from "react"
-import { Pressable, Text, View } from "@astrawind/css"
-import { BoxLink } from "./link"
-import { useScheme, type SchemeSetting } from "./scheme"
+import * as React from "react";
+import { Link, usePathname } from "expo-router";
+import {
+  ArrowUpRightIcon,
+  MenuIcon,
+  MoonIcon,
+  SunIcon,
+} from "lucide-react-native";
+import { Text, View } from "@astrawind/css";
+import cssPackage from "@astrawind/css/package.json";
+import { useTheme } from "@astrawind/ui";
+import { Badge } from "@astrawind/ui/badge";
+import { Button } from "@astrawind/ui/button";
+import { Icon } from "@astrawind/ui/icon";
+import { Separator } from "@astrawind/ui/separator";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@astrawind/ui/sheet";
+import { Sidebar } from "@/docs/sidebar";
+import { BoxLink } from "./link";
+import { saveTheme } from "./theme-persistence";
 
-const NEXT: Record<SchemeSetting, SchemeSetting> = { system: "light", light: "dark", dark: "system" }
-const LABEL: Record<SchemeSetting, string> = { system: "System", light: "Light", dark: "Dark" }
+const UI_SITE = "https://ui.astrawind.io";
 
-function SchemeToggle() {
-  const { setting, setSetting } = useScheme()
+function ModeToggle() {
+  const { resolvedTheme, setTheme } = useTheme();
+  const next = resolvedTheme === "dark" ? "light" : "dark";
   return (
-    <Pressable
-      onPress={() => setSetting(NEXT[setting])}
-      aria-label={`Color scheme: ${LABEL[setting]}`}
-      className="rounded-full px-3 py-1 ring-1 ring-gray-950/10 hover:bg-gray-950/5 active:bg-gray-950/5 dark:ring-white/10 dark:hover:bg-white/5"
+    <Button
+      variant="ghost"
+      size="icon"
+      aria-label="Toggle theme"
+      onPress={() => {
+        setTheme(next);
+        saveTheme(next);
+      }}
     >
-      <Text className="text-xs/5 font-medium text-gray-700 dark:text-gray-300">{LABEL[setting]}</Text>
-    </Pressable>
-  )
+      <Icon
+        as={resolvedTheme === "dark" ? SunIcon : MoonIcon}
+        className="size-4.5"
+      />
+    </Button>
+  );
+}
+
+/** The docs navigation in a sheet, below `lg`. */
+function MobileNav() {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label="Open navigation"
+          className="-ml-2 lg:hidden"
+        >
+          <Icon as={MenuIcon} className="size-5" />
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="left" className="gap-0 p-0">
+        <SheetHeader className="border-b">
+          <SheetTitle>Documentation</SheetTitle>
+        </SheetHeader>
+        <Sidebar className="flex-1" onNavigate={() => setOpen(false)} />
+      </SheetContent>
+    </Sheet>
+  );
 }
 
 export function Logo() {
   return (
-    <BoxLink href="/" className="flex-row items-center gap-2" aria-label="AstraWind home">
-      <View className="size-6 items-center justify-center rounded-md bg-sky-500">
-        <Text className="text-sm font-bold text-white">A</Text>
+    <BoxLink
+      href="/"
+      className="flex-row items-center gap-2"
+      aria-label="AstraWind CSS home"
+    >
+      <View className="size-6 items-center justify-center rounded-md bg-primary">
+        <Text className="text-sm font-bold text-primary-foreground">A</Text>
       </View>
-      <Text className="text-base font-semibold tracking-tight text-gray-950 dark:text-white">AstraWind</Text>
+      <Text className="text-xl font-semibold tracking-tight">
+        AstraWind<Text className="text-primary">CSS</Text>
+      </Text>
     </BoxLink>
-  )
+  );
 }
 
-/** The top bar: logo, links and the color scheme toggle. `menu` renders the mobile nav button. */
-export function Header({ version, menu }: { version: string; menu?: React.ReactNode }) {
+/** The top bar: logo, version, links and the theme toggle. */
+export function Header() {
+  const inDocs = usePathname().startsWith("/docs");
   return (
-    <View className="h-14 flex-row items-center gap-4 border-b border-gray-950/5 bg-white/90 px-4 sm:px-6 dark:border-white/10 dark:bg-gray-950/90">
-      {menu}
+    <View className="z-50 h-14 w-full flex-row items-center gap-3 border-b bg-background px-4 sm:px-6">
+      <MobileNav />
       <Logo />
-      <View className="rounded-full bg-gray-950/5 px-2 py-0.5 dark:bg-white/10">
-        <Text className="font-mono text-xs font-medium text-gray-700 dark:text-gray-300">v{version}</Text>
-      </View>
+      <Badge color="primary" className="font-mono">
+        v{cssPackage.version}
+      </Badge>
       <View className="flex-1" />
-      <BoxLink href="/docs/installation" className="max-sm:hidden">
-        <Text className="text-sm font-medium text-gray-950 hover:text-sky-600 dark:text-white dark:hover:text-sky-400">Docs</Text>
-      </BoxLink>
-      <SchemeToggle />
+      <View className="flex-row items-center gap-1 max-sm:hidden">
+        <Link href="/docs/installation" asChild>
+          <Button variant="ghost" size="sm">
+            <Text
+              className={inDocs ? "text-foreground" : "text-muted-foreground"}
+            >
+              Docs
+            </Text>
+          </Button>
+        </Link>
+        <Link href={UI_SITE} asChild>
+          <Button size="sm">
+            UI
+            <Icon as={ArrowUpRightIcon} />
+          </Button>
+        </Link>
+      </View>
+      <Separator orientation="vertical" className="my-4 max-sm:hidden" />
+      <ModeToggle />
     </View>
-  )
+  );
 }

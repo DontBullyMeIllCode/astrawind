@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Pressable, Text, TextInput, View } from "@astrawind/css"
 import { Code, CodeBlock } from "@/site/code"
-import { H2, H3, P, Table } from "../prose"
+import { H2, H3, P, Preview, Table } from "../prose"
 
 export default function States() {
   return (
@@ -11,7 +11,7 @@ export default function States() {
         Prefix a class with a variant to apply it conditionally. <Code>Pressable</Code>, <Code>TouchableOpacity</Code> and{" "}
         <Code>TextInput</Code> track their own press, hover and focus state:
       </P>
-      <View className="my-6 items-center gap-4 rounded-xl border border-gray-950/10 bg-gray-50 p-8 dark:border-white/10 dark:bg-white/5">
+      <Preview className="gap-4">
         <Pressable className="rounded-full bg-violet-500 px-5 py-2 transition hover:bg-violet-600 active:scale-95 active:bg-violet-700">
           <Text className="font-semibold text-white">Save changes</Text>
         </Pressable>
@@ -19,7 +19,7 @@ export default function States() {
           placeholder="Focus me"
           className="w-64 rounded-lg border border-gray-300 px-3 py-2 text-sm placeholder:text-gray-400 focus:border-sky-500 focus:ring-3 focus:ring-sky-500/20 dark:border-gray-700"
         />
-      </View>
+      </Preview>
       <CodeBlock
         lang="tsx"
         code={`

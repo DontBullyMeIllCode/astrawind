@@ -22,7 +22,7 @@ export function BoxLink({
 export function TextLink({ href, className, children }: { href: Href; className?: string; children?: React.ReactNode }) {
   return (
     <Link href={href} asChild>
-      <Text className={className ?? "font-semibold text-sky-600 underline decoration-sky-400 underline-offset-2 hover:decoration-2 dark:text-sky-400"}>
+      <Text className={className ?? "font-medium text-link underline underline-offset-4 hover:decoration-2"}>
         {children}
       </Text>
     </Link>
