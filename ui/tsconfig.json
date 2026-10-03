@@ -1,0 +1,24 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "types": [
+      "react-native",
+      "vite/client"
+    ],
+    "noEmit": true,
+    "paths": {
+      "@astrawind/ui": [
+        "./src/index.ts"
+      ],
+      "@astrawind/ui/*": [
+        "./src/components/*"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "test",
+    "tsup.config.ts",
+    "vitest.config.ts"
+  ]
+}

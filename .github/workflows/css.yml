@@ -1,0 +1,36 @@
+name: css
+
+on:
+  pull_request:
+    paths: &paths
+      - "css/**"
+      - "site/css/**"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/css.yml"
+  push:
+    branches: [main]
+    paths: *paths
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      # The site resolves @astrawind/css from its dist/.
+      - name: Build @astrawind/css
+        run: pnpm --filter @astrawind/css build
+      - name: Check @astrawind/css
+        run: pnpm --filter @astrawind/css typecheck && pnpm --filter @astrawind/css test
+      - name: Check site/css
+        run: pnpm --filter css typecheck

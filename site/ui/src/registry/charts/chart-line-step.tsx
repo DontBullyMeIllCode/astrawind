@@ -1,0 +1,92 @@
+import { TrendingUp } from "lucide-react-native"
+import { Text, View } from "@astrawind/css"
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@astrawind/ui/card"
+import {
+  CartesianGrid,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  Line,
+  LineChart,
+  XAxis,
+  type ChartConfig,
+} from "@astrawind/ui/chart"
+import { Icon } from "@astrawind/ui/icon"
+
+export const description = "A line chart with step"
+
+const chartData = [
+  { month: "January", desktop: 186 },
+  { month: "February", desktop: 305 },
+  { month: "March", desktop: 237 },
+  { month: "April", desktop: 73 },
+  { month: "May", desktop: 209 },
+  { month: "June", desktop: 214 },
+]
+
+const chartConfig = {
+  desktop: {
+    label: "Desktop",
+    color: "var(--chart-1)",
+  },
+} satisfies ChartConfig
+
+export function ChartLineStep() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Line Chart - Step</CardTitle>
+        <CardDescription>January - June 2024</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <ChartContainer config={chartConfig}>
+          <LineChart
+            accessibilityLayer
+            data={chartData}
+            margin={{
+              left: 12,
+              right: 12,
+            }}
+          >
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="month"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              tickFormatter={(value) => value.slice(0, 3)}
+            />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
+            <Line
+              dataKey="desktop"
+              type="step"
+              stroke="var(--color-desktop)"
+              strokeWidth={2}
+              dot={false}
+            />
+          </LineChart>
+        </ChartContainer>
+      </CardContent>
+      <CardFooter className="flex-col items-start gap-2 text-sm">
+        <View className="flex gap-2 leading-none font-medium">
+          <Text>Trending up by 5.2% this month</Text>
+          <Icon as={TrendingUp} className="h-4 w-4" />
+        </View>
+        <Text className="leading-none text-muted-foreground">
+          Showing total visitors for the last 6 months
+        </Text>
+      </CardFooter>
+    </Card>
+  )
+}

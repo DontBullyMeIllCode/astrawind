@@ -1,0 +1,38 @@
+name: ui
+
+on:
+  pull_request:
+    paths: &paths
+      # @astrawind/ui depends on @astrawind/css, so css changes run these checks too.
+      - "css/**"
+      - "ui/**"
+      - "site/ui/**"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/ui.yml"
+  push:
+    branches: [main]
+    paths: *paths
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      # Types for @astrawind/css and @astrawind/ui come from their dist/.
+      - name: Build @astrawind/css and @astrawind/ui
+        run: pnpm --filter "@astrawind/ui..." build
+      - name: Check @astrawind/ui
+        run: pnpm --filter @astrawind/ui typecheck && pnpm --filter @astrawind/ui test
+      - name: Check site/ui
+        run: pnpm --filter ui typecheck && pnpm --filter ui test

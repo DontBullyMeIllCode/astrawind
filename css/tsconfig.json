@@ -1,0 +1,5 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": { "types": ["react-native"], "noEmit": true },
+  "include": ["src", "test", "tsup.config.ts"]
+}
