@@ -1,6 +1,6 @@
 {
   "name": "@astrawind/css",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Tailwind CSS v4 for React Native. className in, native styles out, resolved at runtime.",
   "keywords": [
     "tailwind",
