@@ -12,6 +12,15 @@
     "css"
   ],
   "license": "MIT",
+  "homepage": "https://www.astrawind.io",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DontBullyMeIllCode/astrawind.git",
+    "directory": "css"
+  },
+  "bugs": {
+    "url": "https://github.com/DontBullyMeIllCode/astrawind/issues"
+  },
   "author": "Alexandra Smith",
   "type": "module",
   "sideEffects": false,

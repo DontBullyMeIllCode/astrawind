@@ -9,7 +9,10 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 permissions:
   contents: write
   pull-requests: write
-  id-token: write # npm provenance
+  # npm trusted publishing: the job authenticates to npm with an OIDC token (no NPM_TOKEN),
+  # and npm adds provenance. Each package lists this repo and release.yml as its trusted
+  # publisher on npmjs.com, and its `repository.url` must match this repo.
+  id-token: write
 
 jobs:
   release:
@@ -32,7 +35,6 @@ jobs:
           title: Version packages
           commit: Version packages
         env:
+          # No NPM_TOKEN: without one, changesets/action leaves .npmrc alone and pnpm 11's
+          # `pnpm publish` uses trusted publishing (pnpm 10's never did).
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true

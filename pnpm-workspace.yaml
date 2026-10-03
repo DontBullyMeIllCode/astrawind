@@ -2,3 +2,15 @@ packages:
   - css
   - ui
   - site/*
+
+# Packages allowed to run install scripts (esbuild downloads its binary). `allowBuilds` is
+# pnpm 10.26+ and 11; `onlyBuiltDependencies` is the same list for older pnpm 10 installs.
+allowBuilds:
+  esbuild: true
+onlyBuiltDependencies:
+  - esbuild
+
+overrides:
+  # xcode@3 (in Expo's config plugins) depends on the deprecated uuid@7. It only calls
+  # require("uuid").v4(); uuid@11 is the last release with a CommonJS build.
+  xcode>uuid: ^11.1.1

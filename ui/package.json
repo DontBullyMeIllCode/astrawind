@@ -12,6 +12,15 @@
     "ui"
   ],
   "license": "MIT",
+  "homepage": "https://ui.astrawind.io",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DontBullyMeIllCode/astrawind.git",
+    "directory": "ui"
+  },
+  "bugs": {
+    "url": "https://github.com/DontBullyMeIllCode/astrawind/issues"
+  },
   "author": "Alexandra Smith",
   "type": "module",
   "sideEffects": false,
@@ -57,7 +66,7 @@
     "prepublishOnly": "pnpm typecheck && pnpm test && pnpm build"
   },
   "peerDependencies": {
-    "@astrawind/css": ">=0.2.0",
+    "@astrawind/css": ">=0.3.0",
     "lucide-react-native": ">=1",
     "react": ">=19",
     "react-hook-form": ">=7",
