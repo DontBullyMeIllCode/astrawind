@@ -95,7 +95,9 @@ it is **not** new-york-v4: it uses `cn-*` theme tokens, `color` props, `soft` va
 
 - `pnpm typecheck` passes.
 - `pnpm test` passes: the class audit, and every example in `test/examples/<name>.tsx`
-  renders in light and dark mode on react-native-web with no React errors.
+  renders in light and dark mode on react-native-web with no React errors, and
+  `test/open.test.tsx` mounts the overlays (sheet, drawer, dialog, alert dialog, popover)
+  open in a DOM (happy-dom). Add an overlay there when it renders its own layout.
 - Each component has an example, `test/examples/<name>.tsx`, modeled on shadcn's demo
   for it (default export, no props), that exercises its variants and sub-components.
 - `src/components/index.ts` exports every component.
