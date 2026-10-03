@@ -20,10 +20,15 @@ import { siteConfig } from "@/lib/site";
 
 export function Logo({ className }: { className?: string }) {
   return (
-    <View
-      className={`size-6 items-center justify-center rounded-md bg-foreground ${className ?? ""}`}
-    >
-      <Text className="text-[13px] font-bold text-background">A</Text>
+    <View className="flex items-center justify-center gap-2">
+      <View
+        className={`size-6 items-center justify-center rounded-md bg-primary ${className ?? ""}`}
+      >
+        <Text className="text-[13px] font-bold text-primary-foreground">A</Text>
+      </View>
+      <Text className="text-xl font-semibold tracking-tight">
+        AstraWind<Text className="text-primary">UI</Text>
+      </Text>
     </View>
   );
 }
@@ -81,7 +86,10 @@ function MobileNav() {
         <SheetHeader className="border-b">
           <SheetTitle>Menu</SheetTitle>
         </SheetHeader>
-        <ScrollView className="flex-1" contentContainerClassName="gap-6 p-4 pb-12">
+        <ScrollView
+          className="flex-1"
+          contentContainerClassName="gap-6 p-4 pb-12"
+        >
           <View className="gap-1">
             {siteConfig.navItems.map((item) => (
               <BoxLink
