@@ -83,6 +83,7 @@ export function useTocHeading(title: string, level: 2 | 3, id = slugify(title)) 
     if (!node || !content || !toc) return
     node.measureLayout(content, (_x, y) => toc.register({ id, title, level, y }), () => {})
   }, [toc, id, title, level])
-  React.useEffect(() => () => toc?.unregister(id), [toc?.unregister, id])
+  const unregister = toc?.unregister
+  React.useEffect(() => () => unregister?.(id), [unregister, id])
   return { ref, onLayout: measure, id }
 }

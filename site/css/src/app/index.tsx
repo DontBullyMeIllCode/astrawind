@@ -1,6 +1,5 @@
 import * as React from "react"
 import { Link } from "expo-router"
-import Head from "expo-router/head"
 import { ArrowRightIcon } from "lucide-react-native"
 import { Pressable, ScrollView, Text, View } from "@astrawind/css"
 import { Badge } from "@astrawind/ui/badge"
@@ -10,6 +9,7 @@ import { Icon } from "@astrawind/ui/icon"
 import { pages } from "@/docs/nav"
 import { TAILWIND_VERSION } from "@/docs/quick-reference"
 import { CodeBlock } from "@/site/code"
+import { Seo } from "@/site/seo"
 
 const DEMO = `
 <View className="flex-row items-center gap-3 rounded-xl bg-white p-4 shadow-md dark:bg-zinc-900">
@@ -66,10 +66,11 @@ export default function Home() {
   const utilities = pages.filter((p) => p.kind === "utility").length
   return (
     <ScrollView className="flex-1" contentContainerClassName="items-center px-4 pb-24 sm:px-6">
-      <Head>
-        <title>AstraWind - Tailwind CSS for React Native</title>
-        <meta name="description" content="Write className the way you would on the web. AstraWind resolves every Tailwind class to native styles at runtime." />
-      </Head>
+      <Seo
+        title="AstraWind - Tailwind CSS for React Native"
+        description="Write className the way you would on the web. AstraWind resolves every Tailwind class to native styles at runtime."
+        path="/"
+      />
       <View className="w-full max-w-5xl">
         <View className="items-start gap-6 pt-16 pb-12 sm:pt-24">
           <Badge variant="soft" color="primary" className="font-mono">

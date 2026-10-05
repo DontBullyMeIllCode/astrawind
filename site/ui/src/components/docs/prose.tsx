@@ -5,9 +5,9 @@ import { useTocHeading } from "./toc"
 /** Building blocks for docs pages, styled like ui.shadcn.com's MDX. */
 
 export function H2({ children, id }: { children: string; id?: string }) {
-  const heading = useTocHeading(children, 2, id)
+  const { ref, onLayout, id: headingId } = useTocHeading(children, 2, id)
   return (
-    <View ref={heading.ref} onLayout={heading.onLayout} nativeID={heading.id} className="mt-12 mb-4">
+    <View ref={ref} onLayout={onLayout} nativeID={headingId} className="mt-12 mb-4">
       <Text role="heading" aria-level={2} className="text-xl font-semibold tracking-tight">
         {children}
       </Text>
@@ -16,9 +16,9 @@ export function H2({ children, id }: { children: string; id?: string }) {
 }
 
 export function H3({ children, id }: { children: string; id?: string }) {
-  const heading = useTocHeading(children, 3, id)
+  const { ref, onLayout, id: headingId } = useTocHeading(children, 3, id)
   return (
-    <View ref={heading.ref} onLayout={heading.onLayout} nativeID={heading.id} className="mt-8 mb-3">
+    <View ref={ref} onLayout={onLayout} nativeID={headingId} className="mt-8 mb-3">
       <Text role="heading" aria-level={3} className="text-lg font-semibold tracking-tight">
         {children}
       </Text>

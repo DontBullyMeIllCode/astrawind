@@ -5,10 +5,15 @@ packages:
 
 # Packages allowed to run install scripts (esbuild downloads its binary). `allowBuilds` is
 # pnpm 10.26+ and 11; `onlyBuiltDependencies` is the same list for older pnpm 10 installs.
+# unrs-resolver (ESLint's import resolver) is skipped: its native binding installs as an
+# optional dependency, and its postinstall is only a fallback for when that fails.
 allowBuilds:
   esbuild: true
+  unrs-resolver: false
 onlyBuiltDependencies:
   - esbuild
+ignoredBuiltDependencies:
+  - unrs-resolver
 
 overrides:
   # xcode@3 (in Expo's config plugins) depends on the deprecated uuid@7. It only calls

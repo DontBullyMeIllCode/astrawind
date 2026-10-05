@@ -1,7 +1,14 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "pnpm install --frozen-lockfile",
-  "buildCommand": "pnpm --filter \"css^...\" build && pnpm exec expo export --platform web",
+  "buildCommand": "pnpm --filter \"css^...\" build && pnpm exec expo export --platform web && node scripts/postexport.mjs",
   "outputDirectory": "dist",
-  "cleanUrls": true
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/docs",
+      "destination": "/docs/installation",
+      "permanent": true
+    }
+  ]
 }

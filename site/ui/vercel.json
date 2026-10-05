@@ -1,7 +1,14 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "pnpm install --frozen-lockfile",
-  "buildCommand": "pnpm --filter \"ui^...\" build && pnpm exec expo export --platform web",
+  "buildCommand": "pnpm --filter \"ui^...\" build && pnpm exec expo export --platform web && node scripts/postexport.mjs",
   "outputDirectory": "dist",
-  "cleanUrls": true
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/charts",
+      "destination": "/charts/area",
+      "permanent": true
+    }
+  ]
 }

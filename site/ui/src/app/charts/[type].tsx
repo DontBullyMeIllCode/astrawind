@@ -1,12 +1,12 @@
 import * as React from "react"
 import { Link, useLocalSearchParams } from "expo-router"
-import Head from "expo-router/head"
 import { ScrollView, Text, View } from "@astrawind/css"
 import { cn } from "@astrawind/ui"
 import { Button } from "@astrawind/ui/button"
 import { ChartDisplay } from "@/components/charts/chart-display"
 import { BoxLink } from "@/components/link"
 import { Announcement, PageActions, PageHeader, PageHeaderDescription, PageHeaderHeading } from "@/components/page-header"
+import { Seo } from "@/components/seo"
 import { SiteFooter } from "@/components/site-footer"
 import { charts as chartComponents } from "@/generated/previews"
 import { chartDocs, chartTypes } from "@/lib/charts"
@@ -44,10 +44,7 @@ export default function ChartsPage() {
   const items = chartDocs.filter((c) => c.type === current.type)
   return (
     <ScrollView className="flex-1">
-      <Head>
-        <title>{`${current.label} - astrawind/ui`}</title>
-        <meta name="description" content={description} />
-      </Head>
+      <Seo title={`${current.label} - astrawind/ui`} description={current.description} path={`/charts/${current.type}`} />
       <PageHeader>
         <Announcement href="/docs/components/chart">Charts for React Native</Announcement>
         <PageHeaderHeading>{title}</PageHeaderHeading>

@@ -11,23 +11,23 @@ import { SiteFooter } from "@/components/site-footer"
 export default function DocsLayout() {
   const pathname = usePathname()
   const scrollRef = React.useRef<RNScrollView | null>(null)
-  const toc = useTocState(scrollRef)
+  const { value: toc, onScroll, contentRef } = useTocState(scrollRef)
 
   React.useEffect(() => {
     scrollRef.current?.scrollTo({ y: 0, animated: false })
   }, [pathname])
 
   return (
-    <TocProvider value={toc.value}>
+    <TocProvider value={toc}>
       <View className="flex-1 flex-row">
         <DocsSidebar className="w-64 shrink-0 grow-0 border-r max-lg:hidden" />
         <ScrollView
           ref={scrollRef}
           className="flex-1"
           scrollEventThrottle={32}
-          onScroll={(e: NativeSyntheticEvent<NativeScrollEvent>) => toc.onScroll(e.nativeEvent.contentOffset.y)}
+          onScroll={(e: NativeSyntheticEvent<NativeScrollEvent>) => onScroll(e.nativeEvent.contentOffset.y)}
         >
-          <View ref={toc.contentRef} className="w-full max-w-3xl self-center px-4 pt-8 pb-16 md:px-8">
+          <View ref={contentRef} className="w-full max-w-3xl self-center px-4 pt-8 pb-16 md:px-8">
             <Slot />
           </View>
           <SiteFooter />

@@ -1,15 +1,15 @@
 import * as React from "react"
 import { useLocalSearchParams } from "expo-router"
-import Head from "expo-router/head"
 import { Text, View } from "@astrawind/css"
 import { cn } from "@astrawind/ui"
 import { Badge } from "@astrawind/ui/badge"
 import { guides } from "@/docs/guides"
-import { pageBySlug, pages, sectionOf, type UtilityPage } from "@/docs/nav"
+import { pageBySlug, pages, sectionOf, type DocPage as DocPageData, type UtilityPage } from "@/docs/nav"
 import { PageNav } from "@/docs/page-nav"
 import { H2, P } from "@/docs/prose"
 import { QuickReference, utilityData } from "@/docs/quick-reference"
 import { TextLink } from "@/site/link"
+import { Seo } from "@/site/seo"
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   return pages.map((p) => ({ slug: p.slug }))
@@ -47,16 +47,22 @@ function UtilityContent({ page }: { page: UtilityPage }) {
   )
 }
 
+/** The document title. A child page's title ("sepia") is shared with its sibling under another parent, so it's prefixed with the parent's: "backdrop-filter: sepia". */
+function documentTitle(page: DocPageData) {
+  if (page.kind !== "utility" || !page.child) return page.title
+  const parent = pages.slice(0, pages.indexOf(page)).findLast((p) => p.kind !== "utility" || !p.child)
+  return parent ? `${parent.title}: ${page.title}` : page.title
+}
+
 export default function DocPage() {
   const { slug } = useLocalSearchParams<{ slug: string }>()
-  const page = pageBySlug(slug)
+  // Expo's static export strips a trailing "index" from each pathname, so /docs/z-index renders as /docs/z-.
+  const page = pageBySlug(slug) ?? (slug?.endsWith("-") ? pageBySlug(`${slug}index`) : undefined)
 
   if (!page) {
     return (
       <View className="gap-4">
-        <Head>
-          <title>Page not found - AstraWind</title>
-        </Head>
+        <Seo title="Page not found - AstraWind" noindex />
         <Text className="text-3xl font-semibold tracking-tight">Page not found</Text>
         <P>
           There's no docs page at this address. Start with <TextLink href="/docs/installation">Installation</TextLink>.
@@ -69,10 +75,11 @@ export default function DocPage() {
   const Guide = page.kind === "guide" ? guides[page.slug] : undefined
   return (
     <View>
-      <Head>
-        <title>{`${page.title} - ${section?.title ?? "Docs"} - AstraWind`}</title>
-        <meta name="description" content={page.description} />
-      </Head>
+      <Seo
+        title={`${documentTitle(page)} - ${section?.title ?? "Docs"} - AstraWind`}
+        description={page.description}
+        path={`/docs/${page.slug}`}
+      />
       <Text className="text-sm/6 font-medium text-link">{section?.title}</Text>
       <Text role="heading" aria-level={1} className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
         {page.title}

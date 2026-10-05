@@ -14,7 +14,7 @@ export async function generateStaticParams(): Promise<{ name: string }[]> {
 export default function ComponentPage() {
   const { name } = useLocalSearchParams<{ name: string }>()
   const doc = componentDocs.find((c) => c.name === name)
-  if (!doc) return <DocsPage title="Not found" description="There's no component with this name." />
+  if (!doc) return <DocsPage title="Not found" description="There's no component with this name." noindex />
   return (
     <DocsPage title={doc.title} description={doc.description}>
       <ComponentPreview component={examples[doc.name]} source={doc.example} title={`${doc.name}-demo.tsx`} />

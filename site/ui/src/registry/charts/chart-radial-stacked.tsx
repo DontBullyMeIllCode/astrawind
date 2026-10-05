@@ -15,7 +15,6 @@ import {
   ChartLabel,
   ChartTooltip,
   ChartTooltipContent,
-  PolarGrid,
   PolarRadiusAxis,
   RadialBar,
   RadialBarChart,

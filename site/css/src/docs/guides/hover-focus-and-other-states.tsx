@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Pressable, Text, TextInput, View } from "@astrawind/css"
+import { Pressable, Text, TextInput } from "@astrawind/css"
 import { Code, CodeBlock } from "@/site/code"
 import { H2, H3, P, Preview, Table } from "../prose"
 

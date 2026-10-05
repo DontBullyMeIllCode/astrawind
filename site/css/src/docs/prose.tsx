@@ -11,9 +11,9 @@ import { useTocHeading } from "./toc"
 
 /** `first` drops the top margin, for a heading that starts the page's content. */
 export function H2({ children, id, first }: { children: string; id?: string; first?: boolean }) {
-  const heading = useTocHeading(children, 2, id)
+  const { ref, onLayout, id: headingId } = useTocHeading(children, 2, id)
   return (
-    <View ref={heading.ref} onLayout={heading.onLayout} className={first ? "mb-4" : "mt-16 mb-4"} nativeID={heading.id}>
+    <View ref={ref} onLayout={onLayout} className={first ? "mb-4" : "mt-16 mb-4"} nativeID={headingId}>
       <Text role="heading" aria-level={2} className="text-xl font-semibold tracking-tight">
         {children}
       </Text>
@@ -22,9 +22,9 @@ export function H2({ children, id, first }: { children: string; id?: string; fir
 }
 
 export function H3({ children, id }: { children: string; id?: string }) {
-  const heading = useTocHeading(children, 3, id)
+  const { ref, onLayout, id: headingId } = useTocHeading(children, 3, id)
   return (
-    <View ref={heading.ref} onLayout={heading.onLayout} className="mt-10 mb-3" nativeID={heading.id}>
+    <View ref={ref} onLayout={onLayout} className="mt-10 mb-3" nativeID={headingId}>
       <Text role="heading" aria-level={3} className="text-base font-semibold">
         {children}
       </Text>

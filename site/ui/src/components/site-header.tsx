@@ -1,7 +1,12 @@
 import * as React from "react";
 import { Link, usePathname, type Href } from "expo-router";
-import { MenuIcon, MoonIcon, SunIcon } from "lucide-react-native";
-import { ScrollView, Text, View } from "@astrawind/css";
+import {
+  ArrowUpRightIcon,
+  MenuIcon,
+  MoonIcon,
+  SunIcon,
+} from "lucide-react-native";
+import { ScrollView, Text, View, Image } from "@astrawind/css";
 import { useTheme } from "@astrawind/ui";
 import { Button } from "@astrawind/ui/button";
 import { Icon } from "@astrawind/ui/icon";
@@ -17,6 +22,13 @@ import { saveTheme } from "@/components/theme-persistence";
 import { BoxLink } from "@/components/link";
 import { docsNav } from "@/lib/docs";
 import { siteConfig } from "@/lib/site";
+
+// Images are `require`d so Metro resolves them to an asset on every platform.
+const GithubBlackIcon = require("@/assets/images/github/github-black.png");
+const GithubWhiteIcon = require("@/assets/images/github/github-white.png");
+const CSS_SITE = "https://www.astrawind.io";
+const GITHUB_SITE =
+  "https://github.com/DontBullyMeIllCode/astrawind/tree/main/ui";
 
 export function Logo({ className }: { className?: string }) {
   return (
@@ -160,6 +172,25 @@ export function SiteHeader() {
         </BoxLink>
         <MainNav />
         <View className="flex-1" />
+        <Link href={CSS_SITE} asChild>
+          <Button size="sm">
+            CSS
+            <Icon as={ArrowUpRightIcon} />
+          </Button>
+        </Link>
+        <Separator orientation="vertical" className="my-4 max-sm:hidden" />
+        <Link href={GITHUB_SITE} asChild>
+          <Button size="icon" variant="ghost">
+            <Image
+              source={GithubBlackIcon}
+              className="size-5 block dark:hidden"
+            />
+            <Image
+              source={GithubWhiteIcon}
+              className="size-5 hidden dark:block"
+            />
+          </Button>
+        </Link>
         <Separator orientation="vertical" className="my-4" />
         <ModeToggle />
       </View>

@@ -6,7 +6,7 @@ import {
   MoonIcon,
   SunIcon,
 } from "lucide-react-native";
-import { Text, View } from "@astrawind/css";
+import { Image, Text, View } from "@astrawind/css";
 import cssPackage from "@astrawind/css/package.json";
 import { useTheme } from "@astrawind/ui";
 import { Badge } from "@astrawind/ui/badge";
@@ -24,7 +24,12 @@ import { Sidebar } from "@/docs/sidebar";
 import { BoxLink } from "./link";
 import { saveTheme } from "./theme-persistence";
 
+// Images are `require`d so Metro resolves them to an asset on every platform.
+const GithubBlackIcon = require("@/assets/images/github/github-black.png");
+const GithubWhiteIcon = require("@/assets/images/github/github-white.png");
 const UI_SITE = "https://ui.astrawind.io";
+const GITHUB_SITE =
+  "https://github.com/DontBullyMeIllCode/astrawind/tree/main/css";
 
 function ModeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -103,9 +108,7 @@ export function Header() {
       <View className="flex-row items-center gap-1 max-sm:hidden">
         <Link href="/docs/installation" asChild>
           <Button variant="ghost" size="sm">
-            <Text
-              className={inDocs ? "text-foreground" : "text-muted-foreground"}
-            >
+            <Text className={inDocs ? "text-primary" : "text-foreground"}>
               Docs
             </Text>
           </Button>
@@ -117,6 +120,19 @@ export function Header() {
           </Button>
         </Link>
       </View>
+      <Separator orientation="vertical" className="my-4 max-sm:hidden" />
+      <Link href={GITHUB_SITE} asChild>
+        <Button size="icon" variant="ghost">
+          <Image
+            source={GithubBlackIcon}
+            className="size-5 block dark:hidden"
+          />
+          <Image
+            source={GithubWhiteIcon}
+            className="size-5 hidden dark:block"
+          />
+        </Button>
+      </Link>
       <Separator orientation="vertical" className="my-4 max-sm:hidden" />
       <ModeToggle />
     </View>

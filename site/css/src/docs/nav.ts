@@ -92,7 +92,7 @@ export const sections: NavSection[] = [
       util("box-sizing", "Utilities for controlling how the browser should calculate an element's total size."),
       util("display", "Utilities for controlling the display box type of an element.", { extra: ["sr-only", "not-sr-only"] }),
       util("float", "Utilities for controlling the wrapping of content around an element."),
-      util("clear", "Utilities for controlling the wrapping of content around an element."),
+      util("clear", "Utilities for controlling whether an element moves below the floats before it."),
       util("isolation", "Utilities for controlling whether an element should explicitly create a new stacking context."),
       util("object-fit", "Utilities for controlling how a replaced element's content should be resized."),
       util("object-position", "Utilities for controlling how a replaced element's content should be positioned within its container."),

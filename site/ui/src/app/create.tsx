@@ -3,6 +3,7 @@ import { router, useLocalSearchParams } from "expo-router"
 import { View } from "@astrawind/css"
 import { useTheme } from "@astrawind/ui"
 import { Customizer } from "@/components/create/customizer"
+import { Seo } from "@/components/seo"
 import { parseMode, parseOptions, toParams, type CreateOptions, type Mode } from "@/lib/create"
 import { CreatePreview } from "@/registry/create/preview"
 
@@ -26,6 +27,11 @@ export default function CreatePage() {
 
   return (
     <View className="min-h-0 flex-1 flex-col gap-4 bg-muted/30 p-4 md:flex-row-reverse md:gap-6 md:p-6">
+      <Seo
+        title="Create - astrawind/ui"
+        description="Pick a base color, theme, chart color, radius and menu style, preview the components restyled, and copy the ThemeProvider for your design."
+        path="/create"
+      />
       <View className="min-h-0 flex-1 overflow-hidden rounded-2xl border shadow-sm">
         <CreatePreview {...options} mode={mode} />
       </View>

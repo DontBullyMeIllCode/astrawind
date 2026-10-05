@@ -13,7 +13,6 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  PolarAngleAxis,
   PolarGrid,
   PolarRadiusAxis,
   Radar,
